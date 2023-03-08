@@ -23,5 +23,8 @@
     "build": "tsc --project './tsconfig.json'",
     "lint": "npx eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
   }
 }

@@ -7,6 +7,9 @@
   "license": "MIT",
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
+    "@types/compression": "^1.7.2",
+    "@types/cors": "^2.8.13",
+    "@types/morgan": "^1.9.4",
     "@types/node": "^18.14.1",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
@@ -25,6 +28,10 @@
     "format": "eslint src/**/*.ts --fix"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "morgan": "^1.10.0",
     "dotenv": "^16.0.3",
     "mysql2": "^3.1.2",
     "sequelize": "^6.29.0",

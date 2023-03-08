@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import path from 'path';
 import dotenv from 'dotenv';
 import Database from './loaders/Database';
+import Express from './loaders/Express';
 import Logger from './utils/Logger';
 
 class App {
@@ -19,6 +20,14 @@ class App {
 		Logger.info('Database :: Booting @ Master...');
 
 		Database.init();
+	}
+
+
+	// Loads your Server
+	public loadServer (): void {
+    Logger.info('Server :: Booting @ Master...');
+
+    Express.init();
 	}
 
 }

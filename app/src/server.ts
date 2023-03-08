@@ -10,5 +10,10 @@ App.loadConfiguration();
  */
 App.loadDatabase();
 
+/**
+ * Init App server
+ */
+App.loadServer()
+
 console.log("Hello world!")
 

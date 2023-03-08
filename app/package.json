@@ -1,0 +1,8 @@
+{
+  "name": "swordhealth_assignment",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "git@github.com:NassarX/swordhealth_assignment.git",
+  "author": "NassarX <mahmoud@nassarx.com>",
+  "license": "MIT"
+}

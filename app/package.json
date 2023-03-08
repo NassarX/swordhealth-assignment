@@ -25,6 +25,9 @@
     "format": "eslint src/**/*.ts --fix"
   },
   "dependencies": {
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "mysql2": "^3.1.2",
+    "sequelize": "^6.29.0",
+    "sequelize-typescript": "^2.1.5"
   }
 }

@@ -5,5 +5,10 @@ import App from './App';
  */
 App.loadConfiguration();
 
+/**
+ * Run the Database pool
+ */
+App.loadDatabase();
+
 console.log("Hello world!")
 

@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  app-db-mysql:
+    container_name: ${APPLICATION_MYSQL_CONTAINER_NAME}
+    build:
+      context: ./docker/mysql
+      args:
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      target: ${APPLICATION_MYSQL_CONTAINER_NAME}
+    image: ${APPLICATION_MYSQL_IMAGE_NAME}:${APPLICATION_MYSQL_IMAGE_TAG}

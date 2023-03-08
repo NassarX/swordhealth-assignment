@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "sword_health",
+    "password": "root",
+    "database": "swordhealth_maintenance",
+    "host": "sh-assignment-mysql",
+    "dialect": "mysql",
+    "port": 3306
+  }
+}

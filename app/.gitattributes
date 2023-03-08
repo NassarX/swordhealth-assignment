@@ -1,0 +1,17 @@
+* text=auto eol=lf
+
+*.ini text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.yml text eol=lf
+*.ts text eol=lf
+*.js text eol=lf
+
+.github export-ignore
+
+# Ignore TypeScript build output
+dist/ export-ignore
+*.js.map export-ignore
+
+# Ignore Node.js modules
+node_modules/ export-ignore

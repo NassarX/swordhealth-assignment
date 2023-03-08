@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  app-db:
+    hostname: ${APPLICATION_MYSQL_HOSTNAME}
+    container_name: ${APPLICATION_MYSQL_CONTAINER_NAME}
+    image: ${APPLICATION_MYSQL_IMAGE_NAME}:${APPLICATION_MYSQL_IMAGE_TAG}
+    env_file:
+      - env/mysql.env
+    volumes:
+      - ${APPLICATION_DB_SCRIPTS}:/docker-entrypoint-initdb.d:rw
+      #- ${APPLICATION_DB_DATA}:/var/lib/mysql:ro
+    ports:
+      - ${APPLICATION_MYSQL_EXTERNAL_PORT}:${APPLICATION_MYSQL_INTERNAL_PORT}
+  
+  app-api:
+    hostname: ${APPLICATION_API_SERVER_HOSTNAME}
+    container_name: ${APPLICATION_API_SERVER_CONTAINER_NAME}
+    image: ${APPLICATION_API_SERVER_IMAGE_NAME}:${APPLICATION_API_SERVER_IMAGE_TAG}
+    volumes:
+      - ${APPLICATION_HOST_DIR}:${APPLICATION_ROOT_DIR}
+    env_file:
+      - env/node.env
+    depends_on:
+      - app-db
+    ports:
+      - ${APPLICATION_API_SERVER_EXTERNAL_PORT}:${APPLICATION_API_SERVER_INTERNAL_PORT}
+      
+networks:
+  default:
+    name: sh_assignment

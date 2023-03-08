@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import { DatabaseConfig } from '../config/db.config';
+import User from "../api/models/User";
 
 class SequelizeClient {
 	private readonly sequelize: Sequelize;
@@ -24,6 +25,14 @@ class SequelizeClient {
 			console.error(`Unable to connect to the database ${this.sequelize.getDatabaseName()}:`, error);
 		}
 	}
+
+  public async syncModels(): Promise<void> {
+    try {
+      await this.sequelize.sync({ force: true });
+    } catch (error) {
+      console.error('Unable to sync models:', error);
+    }
+  }
 
 	public getSequelize(): Sequelize {
 		return this.sequelize;

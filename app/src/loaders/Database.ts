@@ -16,8 +16,12 @@ class Database {
 
       await Promise.all(connections.map(connection => connection.connect()));
       console.log('All database connections established successfully.');
+
+      console.log('All models being synchronized now .....');
+      await Promise.all(connections.map((connection) => connection.syncModels()));
+      console.log('All models were synchronized successfully.');
     } catch (error) {
-      console.error('Unable to connect to the databases:', error);
+      console.error('Unable to initialize the databases:', error);
     }
   }
 

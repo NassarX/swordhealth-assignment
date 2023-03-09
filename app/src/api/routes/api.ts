@@ -2,14 +2,37 @@ import {Request, Response, Router} from 'express';
 import { validate } from "../middlewares/validate";
 import { Container } from "typedi";
 import {
+  createTaskSchema,
+  deleteTaskParamSchema,
+  getTaskQuerySchema,
+  getTasksQuerySchema, getUserTasksQuerySchema,
+  updateTaskSchema
+} from "../types/task.schema";
+import {
   registerSchema,
   loginSchema
 } from "../types/user.schema";
 
+import TaskController from "../controller/TaskController"
 import AuthController from "../controller/AuthController"
 
 const router = Router();
+const taskController = Container.get(TaskController);
 const authController = Container.get(AuthController);
+
+// Tasks Crud routes
+router.route('/tasks')
+  .get(validate(getTasksQuerySchema), taskController.getTasks)
+  .post(validate(createTaskSchema), taskController.createTask);
+
+router.route('/tasks/:id')
+   .get(validate(getTaskQuerySchema), taskController.getTask)
+   .put(validate(updateTaskSchema), taskController.updateTask)
+   .delete(validate(deleteTaskParamSchema), taskController.deleteTask);
+
+router.route('/users/:userId/tasks')
+   .get(validate(getUserTasksQuerySchema), taskController.getUserTasks);
+
 
 
 // Auth routes
@@ -17,10 +40,40 @@ router.route('/auth/register').post(validate(registerSchema), authController.reg
 router.route('/auth/login').post(validate(loginSchema), authController.login);
 
 
+
+// const auth = require('../../middlewares/auth');
+// const userValidation = require('../../validations/user.validation');
+// const userController = require('../../controllers/user.controller');
+
+
+// router
+//   .route('/')
+//   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
+//   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
+//
+// router
+//   .route('/:userId')
+//   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
+//   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
+//   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
+//
+
+
+
+
+
+router.post('/greeting', (req, res) => {
+  const name = req.body;
+  console.log(name)
+  res.send(`Hello, ${name.toString()}!`);
+});
+
+
+
 router.get("/healthchecker", (req: Request, res: Response) => {
   res.status(200).json({
     status: "success",
-    message: "Sword Health Assignment",
+    message: "Build CRUD API with Node.js and Sequelize",
   });
 });
 

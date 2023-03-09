@@ -1,8 +1,30 @@
+import { TaskDto } from "../api/types/task.dto";
 import { Service } from "typedi";
 import { UserDto } from "../api/types/user.dto";
 import Permission from "../api/models/Permission";
 interface Hydrator {
   hydrate(taskData: { [key: string]: any }, optional?: any): any;
+}
+@Service()
+export class MaintenanceTaskHydrator implements Hydrator {
+  hydrate(taskData: { [key: string]: any }): TaskDto {
+    return {
+        id: taskData?.id ?? null,
+        title: taskData?.title ?? '',
+        summary: taskData?.summary ?? '',
+        performedAt: this.hydrateDate(taskData?.performedAt),
+        createdAt: this.hydrateDate(taskData?.createdAt)
+      };
+  }
+  private hydrateDate(date?: string): Date | string {
+    if (!date) {
+      return (new Date()).toDateString();
+    }
+    const dateObj = new Date(date);
+
+    //@TODO Parse the formatted date string into a new Date object
+    return dateObj.toLocaleString();
+  }
 }
 
 @Service()

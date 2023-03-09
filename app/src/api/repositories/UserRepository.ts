@@ -91,4 +91,10 @@ export class UserRepository {
         throw new ApiError(StatusCodes.BAD_REQUEST, 'Username already taken');
     }
   }
+
+  isPasswordMatched = async (user: User, password: string) => {
+    if (!user || !(await user.validPassword(password))) {
+      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Incorrect username/email or password');
+    }
+  }
 }

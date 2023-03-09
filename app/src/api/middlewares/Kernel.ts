@@ -1,5 +1,6 @@
 import { Application } from 'express';
-
+import passport from 'passport';
+import jwtStrategy from "../../config/passport";
 import Http from './Http';
 
 class Kernel {
@@ -8,12 +9,8 @@ class Kernel {
 		// Mount basic express apis middleware
 		_express = Http.mount(_express);
 
-    // Loads the passport configuration
-		//_express = Passport.mountPackage(_express);
-    // jwt authentication
-    //app.use(passport.initialize());
-    //passport.use('jwt', jwtStrategy);
-
+    // Loads the passport configuration || jwt authentication
+    passport.use('jwt', jwtStrategy);
 
 		return _express;
 	}

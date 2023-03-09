@@ -19,7 +19,7 @@ class Env {
 		const maxParameterLimit = process.env.APP_MAX_PARAMETER_LIMIT || '5000';
 
 		const isCORSEnabled = process.env.CORS_ENABLED || true;
-		const jwtExpiresIn = process.env.JWT_EXPIRES_IN || 3;
+		const jwtExpiresIn = process.env.JWT_EXPIRES_IN || 60;
 		const apiPrefix = process.env.API_PREFIX || 'api';
 
 		const logDays = process.env.LOG_DAYS || 10;

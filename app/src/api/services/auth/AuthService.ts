@@ -23,11 +23,11 @@ export default class AuthService {
     const userInstance = await this.userRepository.getUserByUserName(user.username);
     await this.userRepository.isPasswordMatched(userInstance, user.password)
 
+    // get and attach user permissions
     const userPermissions = await userInstance.role.getPermissions();
     const userDto = this.userHydrator.hydrate(userInstance.get(), userPermissions);
 
-    console.log(userDto);
-
+    // generate auth tokens
     const tokens = await this.tokenService.generateAuthTokens(userDto);
     return {
       user: userDto,

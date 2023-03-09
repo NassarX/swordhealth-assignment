@@ -15,6 +15,7 @@ import {
 
 import TaskController from "../controller/TaskController"
 import AuthController from "../controller/AuthController"
+import auth from "../middlewares/auth";
 
 const router = Router();
 const taskController = Container.get(TaskController);
@@ -22,7 +23,7 @@ const authController = Container.get(AuthController);
 
 // Tasks Crud routes
 router.route('/tasks')
-  .get(validate(getTasksQuerySchema), taskController.getTasks)
+  .get(auth('view_all_tasks'), validate(getTasksQuerySchema), taskController.getTasks)
   .post(validate(createTaskSchema), taskController.createTask);
 
 router.route('/tasks/:id')
@@ -38,28 +39,6 @@ router.route('/users/:userId/tasks')
 // Auth routes
 router.route('/auth/register').post(validate(registerSchema), authController.register);
 router.route('/auth/login').post(validate(loginSchema), authController.login);
-
-
-
-// const auth = require('../../middlewares/auth');
-// const userValidation = require('../../validations/user.validation');
-// const userController = require('../../controllers/user.controller');
-
-
-// router
-//   .route('/')
-//   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
-//   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
-//
-// router
-//   .route('/:userId')
-//   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
-//   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
-//   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
-//
-
-
-
 
 
 router.post('/greeting', (req, res) => {

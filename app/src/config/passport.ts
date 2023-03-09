@@ -13,7 +13,7 @@ const jwtOptions = {
 };
 
 const jwtStrategy = new JwtStrategy(jwtOptions, async (jwt_payload: any, done) => {
-  await userRepository.getUserByUserName(jwt_payload.username.toLowerCase)
+  await userRepository.getUserByUserName(jwt_payload.sub.toLowerCase())
     .then((user) => { return done(null, user); })
     .catch((error) => { return done(error, false); });
 });

@@ -1,9 +1,8 @@
 import { Service } from 'typedi';
 import {UserDto} from "../../types/user.dto";
 import Env from "../../../config/app.config";
-
-const jwt = require('jsonwebtoken');
-const moment = require('moment');
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
 
 @Service()
 /**
@@ -18,10 +17,7 @@ export default class TokenService {
    **/
   generateAuthTokens = async (user: UserDto) => {
     const accessTokenExpires = moment().add(Env.config().jwtExpiresIn, 'minutes');
-    const accessToken = this.generateToken(user.id, accessTokenExpires, 'access');
-
-    //@TODO implement freshToken logic
-
+    const accessToken = this.generateToken(user.username, accessTokenExpires.unix(), 'access');
     return {
       access: {
         token: accessToken,
@@ -33,18 +29,18 @@ export default class TokenService {
   /**
    * Generate token
    *
-   * @param userId
+   * @param username
    * @param expires
    * @param type
    * @param secret
    *
    * @returns string
    * */
-  generateToken = (userId: number, expires: number, type: string = 'access', secret = Env.config().appSecret): string => {
+  generateToken = (username: string, expires: number, type: string = 'access', secret = Env.config().appSecret): string => {
     const payload = {
-      sub: userId,
+      sub: username,
       iat: moment().unix(),
-      exp: 8400, //expires.unix(),
+      exp: expires,
       type,
     };
     return jwt.sign(payload, secret);

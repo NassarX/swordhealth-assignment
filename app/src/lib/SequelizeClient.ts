@@ -28,7 +28,7 @@ class SequelizeClient {
 
   public async syncModels(): Promise<void> {
     try {
-      await this.sequelize.sync({ force: true });
+      await this.sequelize.sync({ force: false });
     } catch (error) {
       console.error('Unable to sync models:', error);
     }

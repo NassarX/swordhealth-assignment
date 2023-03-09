@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction, Application } from 'express';
-import { HttpError } from '../utils/HttpError';
+import { ApiError } from '../utils/ApiError';
 import Logger from '../utils/Logger';
 
 class ErrorHandler {
 	static handle = (_express: Application): Application => {
-		const handler = async(err: HttpError, req: Request, res: Response, next: NextFunction) => {
+		const handler = async(err: ApiError, req: Request, res: Response, next: NextFunction) => {
 			const statusCode = err.statusCode || 500;
 			Logger.error(`${statusCode} - ${err.toString()}`);
 			res.status(statusCode).send({

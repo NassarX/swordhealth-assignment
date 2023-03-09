@@ -14,12 +14,13 @@ class Database {
 		try {
       const connections = this.configs.map(config => new SequelizeClient(config));
 
-      await Promise.all(connections.map(connection => connection.connect()));
-      console.log('All database connections established successfully.');
-
-      console.log('All models being synchronized now .....');
-      await Promise.all(connections.map((connection) => connection.syncModels()));
-      console.log('All models were synchronized successfully.');
+      Promise.all(connections.map(connection => connection.connect()))
+        .then(() => {
+          console.log('All database connections established successfully.');
+          return Promise.all(connections.map(connection => connection.syncModels()));
+        }).then(() => {
+          console.log('All models were synchronized successfully.');
+        });
     } catch (error) {
       console.error('Unable to initialize the databases:', error);
     }

@@ -1,6 +1,7 @@
-import {Table, Column, Model, DataType, HasMany, BelongsTo} from 'sequelize-typescript';
+import {Table, Column, Model, DataType, HasMany, BelongsTo, BeforeSave} from 'sequelize-typescript';
 import Task from './Task';
 import Role from "./Role";
+import bcrypt from 'bcryptjs';
 
 @Table({ tableName: 'users' })
 class User extends Model {
@@ -55,6 +56,19 @@ class User extends Model {
     onUpdate: 'NOW()'
   })
   updatedAt?: Date;
+
+  @BeforeSave
+  static hashPassword(user: User) {
+     if (user.password) {
+      user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10));
+    }
+  }
+  validPassword: (password: string) => Promise<boolean>;
 }
+
+User.prototype.validPassword = function (password): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+};
+
 
 export default User;

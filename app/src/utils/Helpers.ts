@@ -1,9 +1,11 @@
-import { TaskDto } from "../api/types/task.dto";
-import { Service } from "typedi";
-import { UserDto } from "../api/types/user.dto";
+import {TaskDto} from "../api/types/task.dto";
+import {Service} from "typedi";
+import {UserDto} from "../api/types/user.dto";
 import Permission from "../api/models/Permission";
+import User from "../api/models/User";
+
 interface Hydrator {
-  hydrate(taskData: { [key: string]: any }, optional?: any): any;
+  hydrate(data: any, optional?: any): any;
 }
 @Service()
 export class MaintenanceTaskHydrator implements Hydrator {
@@ -28,7 +30,9 @@ export class MaintenanceTaskHydrator implements Hydrator {
 
 @Service()
 export class UserHydrator implements Hydrator {
-  hydrate(userData: { [key: string]: any }, userPermissions?: any): UserDto {
+  async hydrate(userData: User): Promise <UserDto> {
+    const userPermissions = await userData.role.getPermissions();
+
     return {
       id: userData?.id ?? null,
       username: userData?.username ?? '',

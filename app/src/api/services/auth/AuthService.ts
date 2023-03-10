@@ -14,38 +14,27 @@ export default class AuthService {
   userHydrator: UserHydrator
 
   constructor(@Inject() userRepository: UserRepository, @Inject() tokenService: TokenService, @Inject() userHydrator: UserHydrator) {
-    this.userRepository = userRepository;
+    this.userRepository  = userRepository;
     this.tokenService = tokenService;
     this.userHydrator = userHydrator;
   }
 
-  authUser = async (user: LoginUserDto) => {
-    const userInstance = await this.userRepository.getUserByUserName(user.username);
-    await this.userRepository.isPasswordMatched(userInstance, user.password)
+  authUser = async (loginUser: LoginUserDto) => {
+    const user = await this.userRepository.getUserByUserName(loginUser.username);
 
-    // get and attach user permissions
-    const userPermissions = await userInstance.role.getPermissions();
-    const userDto = this.userHydrator.hydrate(userInstance.get(), userPermissions);
+    // compare hashed passwords
+    await this.userRepository.isPasswordMatched(user, loginUser.password)
 
     // generate auth tokens
-    const tokens = await this.tokenService.generateAuthTokens(userDto);
+    const tokens = await this.tokenService.generateAuthTokens(user.username);
+
     return {
-      user: userDto,
+      user: await this.userHydrator.hydrate(user),
       tokens: tokens
     }
   }
 
-
-
-  /**
-   * Refresh auth tokens
-   *
-   * @param refreshToken
-   **/
-  refreshAuth = (refreshToken: string) => {
+  logout = async () => {
     //@TODO
   }
-
-
-
 }

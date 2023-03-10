@@ -47,8 +47,7 @@ const filterSchema = z.object({
 const createTaskSchema = z.object({
   body: z.object({
     title: taskTitleSchema,
-    summary: taskSummarySchema,
-    performedAt: taskPerformedAtSchema
+    summary: taskSummarySchema
   })
 });
 

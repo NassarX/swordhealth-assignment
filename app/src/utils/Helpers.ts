@@ -12,18 +12,17 @@ export class MaintenanceTaskHydrator implements Hydrator {
         id: taskData?.id ?? null,
         title: taskData?.title ?? '',
         summary: taskData?.summary ?? '',
-        performedAt: this.hydrateDate(taskData?.performedAt),
-        createdAt: this.hydrateDate(taskData?.createdAt)
+        userId: taskData?.userId ?? null,
+        performedAt: this.hydrateDate(taskData?.performedAt)?.toLocaleString(),
+        createdAt: this.hydrateDate(taskData?.createdAt)?.toLocaleString()
       };
   }
-  private hydrateDate(date?: string): Date | string {
+  private hydrateDate(date?: null): Date | null {
     if (!date) {
-      return (new Date()).toDateString();
+      return null;
     }
-    const dateObj = new Date(date);
-
     //@TODO Parse the formatted date string into a new Date object
-    return dateObj.toLocaleString();
+    return new Date(date);
   }
 }
 

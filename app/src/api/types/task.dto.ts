@@ -1,7 +1,7 @@
 type BaseTaskDto = {
   title: string;
   summary: string;
-  performedAt?: Date | string;
+  performedAt?: Date | null | string;
 }
 
 type CreateTaskDto = BaseTaskDto & {
@@ -14,8 +14,9 @@ type UpdateTaskDto = BaseTaskDto & {
 
 type TaskDto = BaseTaskDto & {
   id: number;
-  createdAt?: Date | string;
-  updatedAt?: Date | string;
+  userId: number | null,
+  createdAt?: Date | null | string;
+  updatedAt?: Date | null | string;
 };
 
 type TasksListDto = {

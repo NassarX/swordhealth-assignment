@@ -16,8 +16,7 @@ if [ "$APPLICATION_API_SERVER_ENV" = "production" ]; then
   yarn run start
 else
   echo "Running in development mode"
-  yarn run dev
-  yarn run start
+  yarn run dev & yarn run start
 fi
 
 ## Start the server

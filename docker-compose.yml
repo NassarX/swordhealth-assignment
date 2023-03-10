@@ -9,7 +9,7 @@ services:
       - env/mysql.env
     volumes:
       - ${APPLICATION_DB_SCRIPTS}:/docker-entrypoint-initdb.d:rw
-      #- ${APPLICATION_DB_DATA}:/var/lib/mysql:ro
+      - ${APPLICATION_DB_DATA}:/var/lib/mysql
     ports:
       - ${APPLICATION_MYSQL_EXTERNAL_PORT}:${APPLICATION_MYSQL_INTERNAL_PORT}
   
@@ -28,4 +28,4 @@ services:
       
 networks:
   default:
-    name: sh_assignment
+    name: sword_health_assignment

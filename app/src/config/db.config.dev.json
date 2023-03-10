@@ -3,7 +3,7 @@
     "username": "sword_health",
     "password": "root",
     "database": "swordhealth_maintenance",
-    "host": "sh-assignment-mysql",
+    "host": "assignment_mysql",
     "dialect": "mysql",
     "port": 3306
   }

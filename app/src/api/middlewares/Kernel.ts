@@ -10,6 +10,7 @@ class Kernel {
 		_express = Http.mount(_express);
 
     // Loads the passport configuration || jwt authentication
+    passport.initialize();
     passport.use('jwt', jwtStrategy);
 
 		return _express;

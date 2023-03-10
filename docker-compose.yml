@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  app-db:
+  app-db-mysql:
     hostname: ${APPLICATION_MYSQL_HOSTNAME}
     container_name: ${APPLICATION_MYSQL_CONTAINER_NAME}
     image: ${APPLICATION_MYSQL_IMAGE_NAME}:${APPLICATION_MYSQL_IMAGE_TAG}
@@ -13,7 +13,7 @@ services:
     ports:
       - ${APPLICATION_MYSQL_EXTERNAL_PORT}:${APPLICATION_MYSQL_INTERNAL_PORT}
   
-  app-api:
+  app-api-node:
     hostname: ${APPLICATION_API_SERVER_HOSTNAME}
     container_name: ${APPLICATION_API_SERVER_CONTAINER_NAME}
     image: ${APPLICATION_API_SERVER_IMAGE_NAME}:${APPLICATION_API_SERVER_IMAGE_TAG}
@@ -22,9 +22,21 @@ services:
     env_file:
       - env/node.env
     depends_on:
-      - app-db
+      - app-db-mysql
     ports:
       - ${APPLICATION_API_SERVER_EXTERNAL_PORT}:${APPLICATION_API_SERVER_INTERNAL_PORT}
+
+  app-messaging-rmq:
+    hostname: ${APPLICATION_RABBITMQ_HOSTNAME}
+    container_name: ${APPLICATION_RABBITMQ_CONTAINER_NAME}
+    image: ${APPLICATION_RABBITMQ_IMAGE_NAME}:${APPLICATION_RABBITMQ_IMAGE_TAG}
+    volumes:
+      - ${APPLICATION_RABBITMQ_DATA}:/var/lib/rabbitmq
+    env_file:
+      - env/node.env
+    ports:
+      - ${APPLICATION_RABBITMQ_PORT_1}:${APPLICATION_RABBITMQ_PORT_1}
+      - ${APPLICATION_RABBITMQ_PORT_2}:${APPLICATION_RABBITMQ_PORT_2}
       
 networks:
   default:

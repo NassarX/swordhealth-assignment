@@ -1,9 +1,11 @@
-import { TaskDto } from "../api/types/task.dto";
-import { Service } from "typedi";
-import { UserDto } from "../api/types/user.dto";
+import {TaskDto} from "../api/types/task.dto";
+import {Service} from "typedi";
+import {UserDto} from "../api/types/user.dto";
 import Permission from "../api/models/Permission";
+import User from "../api/models/User";
+
 interface Hydrator {
-  hydrate(taskData: { [key: string]: any }, optional?: any): any;
+  hydrate(data: any, optional?: any): any;
 }
 @Service()
 export class MaintenanceTaskHydrator implements Hydrator {
@@ -12,24 +14,25 @@ export class MaintenanceTaskHydrator implements Hydrator {
         id: taskData?.id ?? null,
         title: taskData?.title ?? '',
         summary: taskData?.summary ?? '',
-        performedAt: this.hydrateDate(taskData?.performedAt),
-        createdAt: this.hydrateDate(taskData?.createdAt)
+        userId: taskData?.userId ?? null,
+        performedAt: this.hydrateDate(taskData?.performedAt)?.toLocaleString(),
+        createdAt: this.hydrateDate(taskData?.createdAt)?.toLocaleString()
       };
   }
-  private hydrateDate(date?: string): Date | string {
+  private hydrateDate(date?: null): Date | null {
     if (!date) {
-      return (new Date()).toDateString();
+      return null;
     }
-    const dateObj = new Date(date);
-
     //@TODO Parse the formatted date string into a new Date object
-    return dateObj.toLocaleString();
+    return new Date(date);
   }
 }
 
 @Service()
 export class UserHydrator implements Hydrator {
-  hydrate(userData: { [key: string]: any }, userPermissions?: any): UserDto {
+  async hydrate(userData: User): Promise <UserDto> {
+    const userPermissions = await userData.role.getPermissions();
+
     return {
       id: userData?.id ?? null,
       username: userData?.username ?? '',

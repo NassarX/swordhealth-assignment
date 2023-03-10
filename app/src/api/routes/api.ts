@@ -15,51 +15,47 @@ import {
 
 import TaskController from "../controller/TaskController"
 import AuthController from "../controller/AuthController"
+import auth from "../middlewares/auth";
+import authorizedTo from "../middlewares/authorizedTo";
 
 const router = Router();
 const taskController = Container.get(TaskController);
 const authController = Container.get(AuthController);
 
-// Tasks Crud routes
-router.route('/tasks')
-  .get(validate(getTasksQuerySchema), taskController.getTasks)
-  .post(validate(createTaskSchema), taskController.createTask);
-
-router.route('/tasks/:id')
-   .get(validate(getTaskQuerySchema), taskController.getTask)
-   .put(validate(updateTaskSchema), taskController.updateTask)
-   .delete(validate(deleteTaskParamSchema), taskController.deleteTask);
-
-router.route('/users/:userId/tasks')
-   .get(validate(getUserTasksQuerySchema), taskController.getUserTasks);
-
-
-
 // Auth routes
 router.route('/auth/register').post(validate(registerSchema), authController.register);
 router.route('/auth/login').post(validate(loginSchema), authController.login);
 
+// Tasks collection routes
+router.route('/tasks')
+  .get(validate(getTasksQuerySchema),
+    auth,
+    authorizedTo(['view_tasks']),
+    taskController.getTasks) // view all tasks -> manager
+  .post(validate(createTaskSchema),
+    auth,
+    authorizedTo(['create_task']),
+    taskController.createTask); // create task -> technician
 
+router.route('/tasks/:id')
+   .get(validate(getTaskQuerySchema),
+     auth,
+     authorizedTo(['view_task']),
+     taskController.getTask) // view task -> only task owner
+   .put(validate(updateTaskSchema),
+     auth,
+     authorizedTo(['update_task']),
+     taskController.updateTask) // update task -> only task owner
+   .delete(validate(deleteTaskParamSchema),
+     auth,
+     authorizedTo(['delete_task'], { skipOwnershipCheck: false }),
+     taskController.deleteTask); // delete task // only manager
 
-// const auth = require('../../middlewares/auth');
-// const userValidation = require('../../validations/user.validation');
-// const userController = require('../../controllers/user.controller');
-
-
-// router
-//   .route('/')
-//   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
-//   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
-//
-// router
-//   .route('/:userId')
-//   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
-//   .patch(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
-//   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
-//
-
-
-
+router.route('/users/:userId/tasks')
+   .get(validate(getUserTasksQuerySchema),
+     auth,
+     authorizedTo(['view_user_tasks']),
+     taskController.getUserTasks); // view user tasks -> only manager
 
 
 router.post('/greeting', (req, res) => {

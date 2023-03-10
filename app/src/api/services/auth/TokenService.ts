@@ -1,9 +1,7 @@
 import { Service } from 'typedi';
-import {UserDto} from "../../types/user.dto";
 import Env from "../../../config/app.config";
-
-const jwt = require('jsonwebtoken');
-const moment = require('moment');
+import jwt from 'jsonwebtoken';
+import moment from 'moment';
 
 @Service()
 /**
@@ -14,14 +12,11 @@ export default class TokenService {
   /***
    * Generate auth tokens
    *
-   * @param user
+   * @param userIdentifier
    **/
-  generateAuthTokens = async (user: UserDto) => {
+  generateAuthTokens = async (userIdentifier: string) => {
     const accessTokenExpires = moment().add(Env.config().jwtExpiresIn, 'minutes');
-    const accessToken = this.generateToken(user.id, accessTokenExpires, 'access');
-
-    //@TODO implement freshToken logic
-
+    const accessToken = this.generateToken(userIdentifier, accessTokenExpires.unix(), 'access');
     return {
       access: {
         token: accessToken,
@@ -33,20 +28,29 @@ export default class TokenService {
   /**
    * Generate token
    *
-   * @param userId
+   * @param identifier
    * @param expires
    * @param type
    * @param secret
    *
    * @returns string
    * */
-  generateToken = (userId: number, expires: number, type: string = 'access', secret = Env.config().appSecret): string => {
+  generateToken = (identifier: string, expires: number, type: string = 'access', secret = Env.config().appSecret): string => {
     const payload = {
-      sub: userId,
+      sub: identifier,
       iat: moment().unix(),
-      exp: 8400, //expires.unix(),
+      exp: expires,
       type,
     };
     return jwt.sign(payload, secret);
   };
+
+  /**
+   * Refresh auth tokens
+   *
+   * @param refreshToken
+   **/
+  refreshAuth = (refreshToken: string) => {
+    //@TODO
+  }
 }

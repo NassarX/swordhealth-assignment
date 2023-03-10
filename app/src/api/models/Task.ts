@@ -28,7 +28,8 @@ class Task extends Model {
 
   @Column({
     type: DataType.DATEONLY,
-    defaultValue: DataType.NOW,
+    allowNull: true,
+    defaultValue: null
   })
   performedAt!: Date;
 

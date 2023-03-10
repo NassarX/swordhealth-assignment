@@ -2,8 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from 'http-status-codes';
 import TaskService from '../services/TaskService';
 import { Service, Inject } from "typedi";
-import {CreateTaskDto, UpdateTaskDto} from "../types/task.dto";
-import {FilterQuery} from "../types/task.schema";
+import { CreateTaskDto, UpdateTaskDto } from "../types/task.dto";
+import { FilterQuery } from "../types/task.schema";
+import { ApiError } from "../../utils/ApiError";
+import { UserDto } from "../types/user.dto";
 
 @Service()
 export default class TaskController {
@@ -14,12 +16,15 @@ export default class TaskController {
   }
 
   //@manager
-  getTasks = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const userId = 1; // from auth service we get current auth user id
+  getTasks = (async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const authUser = req.user as UserDto;
+    if (!authUser) {
+      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Please authenticate!');
+    }
 
     const filterQuery: FilterQuery = {
       limit: parseInt(req.query.limit as string, 10) || 10,
-      offset: parseInt(req.query.offset as string, 10) || 1,
+      offset: parseInt(req.query.offset as string, 10) || 0,
     };
 
     try {
@@ -28,14 +33,14 @@ export default class TaskController {
     } catch (error) {
       next(error)
     }
-  }
+  });
 
   //@manager
   getUserTasks = async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.userId;
     const filterQuery: FilterQuery = {
       limit: parseInt(req.query.limit as string, 10) || 10,
-      offset: parseInt(req.query.offset as string, 10) || 1,
+      offset: parseInt(req.query.offset as string, 10) || 0,
     };
 
     try {
@@ -48,9 +53,12 @@ export default class TaskController {
 
   //@manager || tech
   createTask = async (req: Request, res: Response, next: NextFunction) => {
-    const userId = 1; // from auth service we get current auth user id
-    const createTaskDto: CreateTaskDto = { ...req.body, userId: userId }
+    const authUser = req.user as UserDto;
+    if (!authUser) {
+      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Please authenticate!');
+    }
 
+    const createTaskDto: CreateTaskDto = { ...req.body, userId: authUser.id }
     try {
       const response = await this.taskService.createTask(createTaskDto);
       res.status(StatusCodes.CREATED).send(response);
@@ -60,8 +68,11 @@ export default class TaskController {
   };
 
   updateTask = async (req: Request, res: Response, next: NextFunction) => {
-    const userId = 1; // from auth service we get current auth user id
-    const updateTaskDto: UpdateTaskDto = { id: req.params.id, ...req.body, userId: userId }
+    const authUser = req.user as UserDto;
+    if (!authUser) {
+      throw new ApiError(StatusCodes.UNAUTHORIZED, 'Please authenticate!');
+    }
+    const updateTaskDto: UpdateTaskDto = { id: req.params.id, ...req.body, userId: authUser.id }
 
     try {
       const response = await this.taskService.updateTask(updateTaskDto);
@@ -72,8 +83,6 @@ export default class TaskController {
   }
 
   getTask = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const userId = 1; // from auth service we get current auth user id
-
     try {
       const response = await this.taskService.getTask(parseInt(req.params.id));
       res.status(StatusCodes.OK).send(response);
@@ -83,8 +92,6 @@ export default class TaskController {
   }
 
   deleteTask = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const userId = 1; // from auth service we get current auth user id
-
     try {
       const response = await this.taskService.deleteTask(parseInt(req.params.id));
       res.status(StatusCodes.OK).send(response);

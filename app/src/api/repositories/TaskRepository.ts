@@ -18,7 +18,7 @@ export class TaskRepository {
     return await (task as Task).update(payload);
   };
 
-  getAll = async (offset = 1, limit = 10): Promise<Task[]> => {
+  getAll = async (offset = 0, limit = 10): Promise<Task[]> => {
     return await Task.findAll({
       include: [User],
       offset: offset,

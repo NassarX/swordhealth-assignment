@@ -52,9 +52,8 @@ export default class TaskService {
    * @param filters
    */
   getTasks = async (filters: FilterQuery): Promise<TasksListDto> => {
-    const retrievedTasks = await this.taskRepository.getAll(filters.offset, filters.limit);
-
-    const hydratedTasks = retrievedTasks.map((task: any) => {
+    const tasks = await this.taskRepository.getAll(filters.offset, filters.limit);
+    const hydratedTasks = tasks.map((task: any) => {
       return this.taskHydrator.hydrate(task);
     });
 

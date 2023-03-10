@@ -16,30 +16,46 @@ import {
 import TaskController from "../controller/TaskController"
 import AuthController from "../controller/AuthController"
 import auth from "../middlewares/auth";
-import hasAccessTask from "../middlewares/hasAccessTask";
+import authorizedTo from "../middlewares/authorizedTo";
 
 const router = Router();
 const taskController = Container.get(TaskController);
 const authController = Container.get(AuthController);
 
-// Tasks collection routes
-router.route('/tasks')
-  .get(auth('view_tasks'), validate(getTasksQuerySchema), taskController.getTasks) // view all tasks -> manager
-  .post(auth('create_task'), validate(createTaskSchema), taskController.createTask); // create task -> technician
-
-router.route('/tasks/:id')
-   .get(auth('view_task'), hasAccessTask, validate(getTaskQuerySchema), taskController.getTask) // view task -> only task owner
-   .put(auth('update_task'), hasAccessTask, validate(updateTaskSchema), taskController.updateTask) // update task -> only task owner
-   .delete(auth('delete_task'), validate(deleteTaskParamSchema), taskController.deleteTask); // delete task // only manager
-
-router.route('/users/:userId/tasks')
-   .get(auth('view_user_tasks'), validate(getUserTasksQuerySchema), taskController.getUserTasks); // view user tasks -> only manager
-
-
-
 // Auth routes
 router.route('/auth/register').post(validate(registerSchema), authController.register);
 router.route('/auth/login').post(validate(loginSchema), authController.login);
+
+// Tasks collection routes
+router.route('/tasks')
+  .get(validate(getTasksQuerySchema),
+    auth,
+    authorizedTo(['view_tasks']),
+    taskController.getTasks) // view all tasks -> manager
+  .post(validate(createTaskSchema),
+    auth,
+    authorizedTo(['create_task']),
+    taskController.createTask); // create task -> technician
+
+router.route('/tasks/:id')
+   .get(validate(getTaskQuerySchema),
+     auth,
+     authorizedTo(['view_task']),
+     taskController.getTask) // view task -> only task owner
+   .put(validate(updateTaskSchema),
+     auth,
+     authorizedTo(['update_task']),
+     taskController.updateTask) // update task -> only task owner
+   .delete(validate(deleteTaskParamSchema),
+     auth,
+     authorizedTo(['delete_task'], { skipOwnershipCheck: false }),
+     taskController.deleteTask); // delete task // only manager
+
+router.route('/users/:userId/tasks')
+   .get(validate(getUserTasksQuerySchema),
+     auth,
+     authorizedTo(['view_user_tasks']),
+     taskController.getUserTasks); // view user tasks -> only manager
 
 
 router.post('/greeting', (req, res) => {

@@ -16,23 +16,24 @@ import {
 import TaskController from "../controller/TaskController"
 import AuthController from "../controller/AuthController"
 import auth from "../middlewares/auth";
+import hasAccessTask from "../middlewares/hasAccessTask";
 
 const router = Router();
 const taskController = Container.get(TaskController);
 const authController = Container.get(AuthController);
 
-// Tasks Crud routes
+// Tasks collection routes
 router.route('/tasks')
-  .get(auth('view_all_tasks'), validate(getTasksQuerySchema), taskController.getTasks)
-  .post(validate(createTaskSchema), taskController.createTask);
+  .get(auth('view_tasks'), validate(getTasksQuerySchema), taskController.getTasks) // view all tasks -> manager
+  .post(auth('create_task'), validate(createTaskSchema), taskController.createTask); // create task -> technician
 
 router.route('/tasks/:id')
-   .get(validate(getTaskQuerySchema), taskController.getTask)
-   .put(validate(updateTaskSchema), taskController.updateTask)
-   .delete(validate(deleteTaskParamSchema), taskController.deleteTask);
+   .get(auth('view_task'), hasAccessTask, validate(getTaskQuerySchema), taskController.getTask) // view task -> only task owner
+   .put(auth('update_task'), hasAccessTask, validate(updateTaskSchema), taskController.updateTask) // update task -> only task owner
+   .delete(auth('delete_task'), validate(deleteTaskParamSchema), taskController.deleteTask); // delete task // only manager
 
 router.route('/users/:userId/tasks')
-   .get(validate(getUserTasksQuerySchema), taskController.getUserTasks);
+   .get(auth('view_user_tasks'), validate(getUserTasksQuerySchema), taskController.getUserTasks); // view user tasks -> only manager
 
 
 

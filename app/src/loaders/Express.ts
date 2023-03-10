@@ -3,7 +3,7 @@ import express from 'express';
 import Env from '../config/app.config';
 import Routes from './Routes';
 import ErrorHandler from './ErrorHandler';
-import Bootstrap from '../api/middlewares/Kernel';
+import Bootstrap from './Kernel';
 
 class Express {
 	/**

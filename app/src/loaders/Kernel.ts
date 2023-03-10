@@ -1,6 +1,6 @@
 import { Application } from 'express';
 import passport from 'passport';
-import jwtStrategy from "../../config/passport";
+import jwtStrategy from "../config/passport.config";
 import Http from './Http';
 
 class Kernel {

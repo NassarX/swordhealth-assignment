@@ -16,7 +16,7 @@ class Http {
 			limit: Env.config().maxUploadLimit
 		}));
 
-    // Enables handling urlencoded form data
+		// Enables handling urlencoded form data
 		_express.use(bodyParser.urlencoded({
 			limit: parseInt(Env.config().maxUploadLimit),
 			parameterLimit: parseInt(Env.config().maxParameterLimit),
@@ -32,8 +32,8 @@ class Http {
 		// Enables the "gzip" / "deflate" compression for response
 		_express.use(compress());
 
-    // Enables HTTP request logger middleware
-    if (Env.config().appEnv === "development") _express.use(morgan('dev'));
+		// Enables HTTP request logger middleware
+		if (Env.config().appEnv === "development") {_express.use(morgan('dev'));}
 
 		return _express;
 	}

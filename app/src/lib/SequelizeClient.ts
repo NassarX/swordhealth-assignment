@@ -25,13 +25,13 @@ class SequelizeClient {
 		}
 	}
 
-  public async syncModels(): Promise<void> {
-    try {
-      await this.sequelize.sync({ force: false });
-    } catch (error) {
-      console.error('Unable to sync models:', error);
-    }
-  }
+	public async syncModels(): Promise<void> {
+		try {
+			await this.sequelize.sync({ force: false });
+		} catch (error) {
+			console.error('Unable to sync models:', error);
+		}
+	}
 
 	public getSequelize(): Sequelize {
 		return this.sequelize;

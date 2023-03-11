@@ -10,10 +10,13 @@ App.loadConfiguration();
  */
 App.loadDatabase();
 
+
+App.loadAmqp();
+
 /**
  * Init App server
  */
 App.loadServer()
 
-console.log("Hello world!")
+console.log("Hello world from node server!")
 

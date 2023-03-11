@@ -1,5 +1,5 @@
 import SequelizeClient from '../lib/SequelizeClient';
-import Databases, { DatabaseConfig } from '../config/db.config';
+import { getDatabases, DatabaseConfig } from '../config/db.config';
 
 class Database {
 
@@ -27,7 +27,7 @@ class Database {
 	}
 
 	private static filterEnabledDatabases(): void {
-		Object.values(Databases.databases)
+		Object.values(getDatabases().databases)
 			.filter(dbConfig => dbConfig.enable === 'true')
 			.forEach(dbConfig => {
 				Database.configs.push(dbConfig);

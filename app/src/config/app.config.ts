@@ -1,6 +1,4 @@
 import { Application } from 'express';
-import * as path from 'path';
-import * as dotenv from 'dotenv';
 
 class Env {
 	/**
@@ -9,8 +7,6 @@ class Env {
 	 */
 	// @TODO Apply Config validation using Joi | Zod for early error detection of configurations.
 	public static config(): any {
-		dotenv.config({ path: path.join(__dirname, '../../.env') });
-
 		const url = process.env.APP_URL || `http://localhost:${process.env.PORT}`;
 		const appEnv = process.env.APP_ENV || 'development';
 		const port = process.env.PORT || 3000;

@@ -1,6 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
 import { DatabaseConfig } from '../config/db.config';
-import User from "../api/models/User";
 
 class SequelizeClient {
 	private readonly sequelize: Sequelize;

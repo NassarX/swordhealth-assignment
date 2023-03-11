@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 
+import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import Database from './loaders/Database';
@@ -12,7 +13,14 @@ class App {
 	public loadConfiguration (): void {
     Logger.info('Configuration :: Booting @ Master...');
 
-    dotenv.config({ path: path.join(__dirname, '../../.env') });
+    const envDir = path.join(__dirname, '../env');
+    const envFiles = fs.readdirSync(envDir)
+      .filter(file => file.endsWith('.env'))
+      .map(file => path.join(envDir, file));
+
+    for (const envFile of envFiles) {
+      dotenv.config({ path: `${__dirname}/${envFile}` });
+    }
   }
 
   	// Loads the Database Pool

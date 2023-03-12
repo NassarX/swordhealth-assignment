@@ -15,7 +15,6 @@ export default class TaskController {
     this.taskService = taskService;
   }
 
-  //@manager
   getTasks = (async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const authUser = req.user as UserDto;
     if (!authUser) {
@@ -35,7 +34,6 @@ export default class TaskController {
     }
   });
 
-  //@manager
   getUserTasks = async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.userId;
     const filterQuery: FilterQuery = {
@@ -51,7 +49,6 @@ export default class TaskController {
     }
   }
 
-  //@manager || tech
   createTask = async (req: Request, res: Response, next: NextFunction) => {
     const authUser = req.user as UserDto;
     if (!authUser) {

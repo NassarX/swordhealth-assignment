@@ -3,6 +3,7 @@ import { Service } from "typedi";
 import { UserDto } from "../types/user.dto";
 import Permission from "../models/Permission";
 import User from "../models/User";
+import {Anonymizer} from "../../lib/anonymizer";
 
 interface Hydrator {
   hydrate(data: any, optional?: any): any;
@@ -10,10 +11,11 @@ interface Hydrator {
 @Service()
 export class MaintenanceTaskHydrator implements Hydrator {
 	hydrate(taskData: { [key: string]: any }): TaskDto {
+    const anonymizer = new Anonymizer(taskData?.id ?? '1000');
 		return {
 			id: taskData?.id ?? null,
 			title: taskData?.title ?? '',
-			summary: taskData?.summary ?? '',
+			summary: anonymizer.anonymize(taskData?.summary ?? ''),
 			userId: taskData?.userId ?? null,
 			userName: taskData?.user?.username ?? null,
 			performedAt: this.hydrateDate(taskData?.performedAt)?.toDateString(),

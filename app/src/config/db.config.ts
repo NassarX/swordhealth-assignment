@@ -1,4 +1,5 @@
 import { Dialect } from "sequelize";
+import path from "path";
 
 export interface DatabaseConfig {
   enable?: 'true' | 'false',
@@ -9,8 +10,8 @@ export interface DatabaseConfig {
   database: string,
   port: number
   dialectOptions?: object,
-  migrationsPath?: string,
-  modelsPath: string,
+  migrationsDir?: string,
+  modelsDir: string,
 }
 
 interface DatabasesConfig {
@@ -29,8 +30,7 @@ export const getDatabases = (): DatabasesConfig =>  {
         'password': process.env.MAINTENANCE_DB_PASSWORD! as string,
         'database': process.env.MAINTENANCE_DB_NAME! as string,
         'port': parseInt(process.env.MAINTENANCE_DB_PORT! || '3306', 10),
-        'modelsPath': __dirname + '/../api/models/**.ts', // @TODO find a way to move the path to env
-        'migrationsPath': __dirname + '/../database/migrations/**.ts'
+        'modelsDir': path.join(__dirname, '..', 'api', 'models'),
       }
     }
   };

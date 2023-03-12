@@ -1,4 +1,4 @@
-import { TaskDto } from "../api/types/task.dto";
+import {TaskDto, TaskNotificationDto} from "../api/types/task.dto";
 import { Service } from "typedi";
 import { UserDto } from "../api/types/user.dto";
 import Permission from "../api/models/Permission";
@@ -15,10 +15,20 @@ export class MaintenanceTaskHydrator implements Hydrator {
 			title: taskData?.title ?? '',
 			summary: taskData?.summary ?? '',
 			userId: taskData?.userId ?? null,
-			performedAt: this.hydrateDate(taskData?.performedAt)?.toLocaleString(),
+			userName: taskData?.user?.username ?? null,
+			performedAt: this.hydrateDate(taskData?.performedAt)?.toDateString(),
 			createdAt: this.hydrateDate(taskData?.createdAt)?.toLocaleString()
 		};
 	}
+
+  hydrateNotification(task: TaskDto): TaskNotificationDto {
+    return {
+      //The tech X performed the task Y on date Z
+      content: `The tech ${task.userName} performed the task ${task.title} on date ${task.performedAt}`,
+      channels: ['email', 'sms']
+    }
+  }
+
 	private hydrateDate(date?: null): Date | null {
 		if (!date) {
 			return null;

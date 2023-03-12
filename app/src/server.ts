@@ -18,5 +18,5 @@ App.loadAmqp();
  */
 App.loadServer()
 
-console.log("Hello world from node server!")
+console.log("Sword Health Server Starting ....")
 

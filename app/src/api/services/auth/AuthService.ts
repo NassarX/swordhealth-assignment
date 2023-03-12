@@ -1,8 +1,8 @@
 import { Inject, Service } from 'typedi';
 import TokenService from "./TokenService";
-import {LoginUserDto, UserDto} from "../../types/user.dto";
+import {LoginUserDto} from "../../types/user.dto";
 import {UserRepository} from "../../repositories/UserRepository";
-import {UserHydrator} from "../../../utils/Helpers";
+import {UserHydrator} from "../../utils/Helpers";
 
 @Service()
 /**

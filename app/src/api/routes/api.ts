@@ -58,14 +58,6 @@ router.route('/users/:userId/tasks')
      taskController.getUserTasks); // view user tasks -> only manager
 
 
-router.post('/greeting', (req, res) => {
-  const name = req.body;
-  console.log(name)
-  res.send(`Hello, ${name.toString()}!`);
-});
-
-
-
 router.get("/healthchecker", (req: Request, res: Response) => {
   res.status(200).json({
     status: "success",

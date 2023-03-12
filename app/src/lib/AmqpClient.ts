@@ -1,13 +1,11 @@
-import amqp, {Channel} from 'amqplib';
+import amqp, { Channel } from 'amqplib';
 import {
-  ConnectionConfig,
-  ExchangeConfig,
-  EXCHANGES_METADATA,
-  QueueConfig,
-  QUEUES_METADATA
+	ConnectionConfig,
+	ExchangeConfig,
+	QueueConfig
 } from '../config/amqp.config';
-import Logger from '../utils/Logger';
-import {Service} from "typedi";
+import Logger from './Logger';
+import { Service } from "typedi";
 
 @Service()
 class AmqpClient {
@@ -28,40 +26,40 @@ class AmqpClient {
 			throw err;
 		}
 
-    return this;
+		return this;
 	}
 
-  async createChannel(): Promise<void> {
-    this.channel = await this.connection.createChannel();
+	async createChannel(): Promise<void> {
+		this.channel = await this.connection.createChannel();
 	}
 
 	public async assertExchanges(exchangeConfig: ExchangeConfig): Promise<Channel> {
-     await this.channel.assertExchange(
-       exchangeConfig.name,
-       exchangeConfig.type || 'direct',
-       exchangeConfig.options || {}
-     );
-     Logger.info(`Exchange '${exchangeConfig.name}' is ready`);
+		await this.channel.assertExchange(
+			exchangeConfig.name,
+			exchangeConfig.type || 'direct',
+			exchangeConfig.options || {}
+		);
+		Logger.info(`Exchange '${exchangeConfig.name}' is ready`);
 
-     return this.channel;
+		return this.channel;
 	}
 
 	public async bindExchangeQueues(queueConfig: QueueConfig): Promise<Channel> {
 	    const assertQueueResult = await this.channel.assertQueue(queueConfig.name, queueConfig.options);
-      if (queueConfig.bindings) {
-        for (const bindingConfig of queueConfig.bindings) {
-          await this.channel.bindQueue(assertQueueResult.queue, bindingConfig.exchange, bindingConfig.routingKey);
-          Logger.info(`Binding '${bindingConfig.exchange}' with routing key '${bindingConfig.routingKey}' is ready`);
-          console.log(`Binding '${bindingConfig.exchange}' with routing key '${bindingConfig.routingKey}' is ready`);
-				}
-      }
-      return this.channel;
+		if (queueConfig.bindings) {
+			for (const bindingConfig of queueConfig.bindings) {
+				await this.channel.bindQueue(assertQueueResult.queue, bindingConfig.exchange, bindingConfig.routingKey);
+				Logger.info(`Binding '${bindingConfig.exchange}' with routing key '${bindingConfig.routingKey}' is ready`);
+				console.log(`Binding '${bindingConfig.exchange}' with routing key '${bindingConfig.routingKey}' is ready`);
+			}
+		}
+		return this.channel;
 	}
 
-  async close() {
-    //@TODO trade-off between open/close connection & channels!
-    await this.channel.close();
-  }
+	async close() {
+		// @TODO trade-off between open/close connection & channels!
+		await this.channel.close();
+	}
 }
 
 export default AmqpClient;

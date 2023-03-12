@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as z from 'zod';
-import { BadRequestError } from '../../utils/ApiError';
-import Logger from '../../utils/Logger';
+import { BadRequestError } from '../../lib/ApiError';
+import Logger from '../../lib/Logger';
 
 
 export const validate =

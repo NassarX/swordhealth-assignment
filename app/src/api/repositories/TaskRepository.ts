@@ -1,7 +1,7 @@
 import Task from '../models/Task';
 import { CreateTaskDto, UpdateTaskDto } from "../types/task.dto";
 import { Service } from "typedi";
-import { NotFoundError } from "../../utils/ApiError";
+import { NotFoundError } from "../../lib/ApiError";
 import User from "../models/User";
 
 @Service()

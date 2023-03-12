@@ -15,7 +15,7 @@ class SequelizeClient {
 				dialectOptions: config.dialectOptions,
 				logging: false
 			});
-    this.importModels(config.modelsDir);
+		this.importModels(config.modelsDir);
 	}
 
 	public async connect(): Promise<void> {
@@ -39,12 +39,12 @@ class SequelizeClient {
 		return this.sequelize;
 	}
 
-  private importModels(modelsDir: string) {
-    const models = fs.readdirSync(modelsDir)
-      .filter((file) => /\.js$/.test(file))
-      .map(file => require(path.join(modelsDir, file)).default);
-    this.sequelize.addModels(models);
-  }
+	private importModels(modelsDir: string) {
+		const models = fs.readdirSync(modelsDir)
+			.filter(file => /\.js$/.test(file))
+			.map(file => require(path.join(modelsDir, file)).default);
+		this.sequelize.addModels(models);
+	}
 }
 
 export default SequelizeClient;

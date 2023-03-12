@@ -36,56 +36,55 @@ const buildAmqpUrl = (options: amqp.Options.Connect): string => {
 	return `${protocol}://${username}:${password}@${hostname}:${port}/${vhost}`;
 };
 
-export const getRabbitMQConnectionConfig = (): ConnectionConfig =>  {
-  return {
-    url: buildAmqpUrl({
-      protocol: process.env.AMQP_PROTOCOL as string,
-      hostname: process.env.AMQP_HOSTNAME as string,
-      port: parseInt(process.env.AMQP_AMQP_PORT || '5672', 10) as number,
-      username: process.env.AMQP_USERNAME as string,
-      password: process.env.AMQP_PASSWORD as string,
-      vhost: process.env.AMQP_VHOST as string
-	})
-  }
+export const getRabbitMQConnectionConfig = (): ConnectionConfig => {
+	return {
+		url: buildAmqpUrl({
+			protocol: process.env.AMQP_PROTOCOL as string,
+			hostname: process.env.AMQP_HOSTNAME as string,
+			port: parseInt(process.env.AMQP_AMQP_PORT || '5672', 10) as number,
+			username: process.env.AMQP_USERNAME as string,
+			password: process.env.AMQP_PASSWORD as string,
+			vhost: process.env.AMQP_VHOST as string
+		})
+	};
 };
 
 export const EXCHANGES_METADATA: { [key: string]: ExchangeConfig } = {
-  maintenance_tasks: {
-    name: process.env.AMQP_MAINTENANCE_TASKS_EXCHANGE || 'maintenance_tasks' as string,
-    type: process.env.AMQP_MAINTENANCE_TASKS_EXCHANGE_TYPE || 'direct' as string,
-    options: {
-      durable: true // So it survives any server restart or failure (written to disk temp)
-    }
-  },
-  default_exchange: {
-    name: 'default_tasks_exchange' as string, //@TODO move it
-    type: 'direct' as string,
-    options: {
-      durable: true // So it survives any server restart or failure (written to disk temp)
-    }
-  }
-}
+	maintenance_tasks: {
+		name: process.env.AMQP_MAINTENANCE_TASKS_EXCHANGE || 'maintenance_tasks' as string,
+		type: process.env.AMQP_MAINTENANCE_TASKS_EXCHANGE_TYPE || 'direct' as string,
+		options: {
+			durable: true // So it survives any server restart or failure (written to disk temp)
+		}
+	},
+	default_exchange: {
+		name: 'default_tasks_exchange' as string, // @TODO move it
+		type: 'direct' as string,
+		options: {
+			durable: true // So it survives any server restart or failure (written to disk temp)
+		}
+	}
+};
 
 export const QUEUES_METADATA: { [key: string]: QueueConfig } = {
-  manager_tasks: {
-    name: process.env.AMQP_MAINTENANCE_TASKS_MANAGER_QUEUE || 'manager_tasks' as string,
-    options: { durable: true },
-    bindings: [
-      {
-        exchange: process.env.AMQP_MAINTENANCE_TASKS_EXCHANGE || 'maintenance_tasks',
-        routingKey: process.env.AMQP_MAINTENANCE_TASKS_PERFORMED_BINDING_KEY || 'task.performed'
-      }]
-  },
-  default_queue: {
-    name: 'default_tasks_queue' as string,
-    options: { durable: true },
-    bindings: [
-      {
-        exchange: 'default_tasks_exchange',
-        routingKey: 'task.*'
-      }]
-  }
+	manager_tasks: {
+		name: process.env.AMQP_MAINTENANCE_TASKS_MANAGER_QUEUE || 'manager_tasks' as string,
+		options: { durable: true },
+		bindings: [
+			{
+				exchange: process.env.AMQP_MAINTENANCE_TASKS_EXCHANGE || 'maintenance_tasks',
+				routingKey: process.env.AMQP_MAINTENANCE_TASKS_PERFORMED_BINDING_KEY || 'task.performed'
+			}]
+	},
+	default_queue: {
+		name: 'default_tasks_queue' as string,
+		options: { durable: true },
+		bindings: [
+			{
+				exchange: 'default_tasks_exchange',
+				routingKey: 'task.*'
+			}]
+	}
 
-}
-
+};
 

@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { ApiError } from "../../utils/ApiError";
+import { ApiError } from "../../lib/ApiError";
 import {UserDto} from "../types/user.dto";
 
 const verifyCallback = (

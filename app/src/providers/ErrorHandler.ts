@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, Application } from 'express';
-import { ApiError } from '../utils/ApiError';
-import Logger from '../utils/Logger';
+import { ApiError } from '../lib/ApiError';
+import Logger from '../lib/Logger';
 
 class ErrorHandler {
 	static handle = (_express: Application): Application => {

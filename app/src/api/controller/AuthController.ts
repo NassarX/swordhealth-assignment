@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import UserService from '../services/UserService';
 import AuthService from '../services/auth/AuthService';
 import { Service, Inject } from "typedi";
-import {CreateUserDto, LoginUserDto, UpdateUserDto} from "../types/user.dto";
+import {CreateUserDto, LoginUserDto} from "../types/user.dto";
 
 @Service()
 export default class AuthController {

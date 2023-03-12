@@ -10,7 +10,9 @@ App.loadConfiguration();
  */
 App.loadDatabase();
 
-
+/**
+ * Init RabbitMQ
+ */
 App.loadAmqp();
 
 /**

@@ -4,7 +4,7 @@ import TaskService from '../services/TaskService';
 import { Service, Inject } from "typedi";
 import { CreateTaskDto, UpdateTaskDto } from "../types/task.dto";
 import { FilterQuery } from "../types/task.schema";
-import { ApiError } from "../../utils/ApiError";
+import { ApiError } from "../../lib/ApiError";
 import { UserDto } from "../types/user.dto";
 
 @Service()

@@ -1,7 +1,7 @@
 import User from '../models/User';
 import { CreateUserDto, UpdateUserDto } from "../types/user.dto";
 import { Service } from "typedi";
-import { ApiError, NotFoundError } from "../../utils/ApiError";
+import { ApiError, NotFoundError } from "../../lib/ApiError";
 import { StatusCodes } from "http-status-codes";
 import {Op} from "sequelize";
 import Role from "../models/Role";

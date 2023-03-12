@@ -3,7 +3,7 @@ import { Application } from 'express';
 import compress from 'compression';
 import * as bodyParser from 'body-parser';
 import morgan from 'morgan';
-import Log from '../utils/Logger';
+import Log from '../lib/Logger';
 import Env from '../config/app.config';
 
 class Http {

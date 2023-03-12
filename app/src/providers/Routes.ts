@@ -1,6 +1,6 @@
 import { Application } from 'express';
 import Env from '../config/app.config';
-import Log from '../utils/Logger';
+import Log from '../lib/Logger';
 import apiRouter from '../api/routes/api';
 
 class Routes {

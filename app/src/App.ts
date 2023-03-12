@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 
-import Database from './loaders/Database';
-import Express from './loaders/Express';
-import Logger from './utils/Logger';
-import { AmqpProvider } from "./loaders/AmqpProvider";
+import Database from './providers/Database';
+import Express from './providers/Express';
+import Logger from './lib/Logger';
+import { AmqpProvider } from "./providers/AmqpProvider";
 
 class App {
 	// Loads your dotenv file

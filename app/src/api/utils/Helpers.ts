@@ -1,8 +1,8 @@
-import {TaskDto, TaskNotificationDto} from "../api/types/task.dto";
+import {TaskDto, TaskNotificationDto} from "../types/task.dto";
 import { Service } from "typedi";
-import { UserDto } from "../api/types/user.dto";
-import Permission from "../api/models/Permission";
-import User from "../api/models/User";
+import { UserDto } from "../types/user.dto";
+import Permission from "../models/Permission";
+import User from "../models/User";
 
 interface Hydrator {
   hydrate(data: any, optional?: any): any;

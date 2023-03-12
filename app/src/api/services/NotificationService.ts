@@ -1,6 +1,6 @@
-import {Inject, Service} from 'typedi';
+import {Service} from 'typedi';
 import { EmailManager } from "./messaging/EmailManager";
-import Logger from "../../utils/Logger";
+import Logger from "../../lib/Logger";
 import appConfig from "../../config/app.config";
 
 export interface Notification {

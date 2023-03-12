@@ -2,7 +2,7 @@ import {Inject, Service} from 'typedi';
 import {TaskRepository} from "../repositories/TaskRepository";
 import {CreateTaskDto, TaskDto, TasksListDto, UpdateTaskDto} from "../types/task.dto";
 import {FilterQuery} from "../types/task.schema";
-import {MaintenanceTaskHydrator} from "../../utils/Helpers";
+import {MaintenanceTaskHydrator} from "../utils/Helpers";
 import NotificationService from "./NotificationService";
 
 @Service()

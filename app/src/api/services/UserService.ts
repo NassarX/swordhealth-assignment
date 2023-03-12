@@ -2,7 +2,7 @@ import {Inject, Service} from 'typedi';
 import {UserRepository} from "../repositories/UserRepository";
 import {CreateUserDto, UpdateUserDto, UserDto, UsersListDto} from "../types/user.dto";
 import {FilterQuery} from "../types/user.schema";
-import {UserHydrator} from "../../utils/Helpers";
+import {UserHydrator} from "../utils/Helpers";
 
 @Service()
 /**

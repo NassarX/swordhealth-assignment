@@ -17,14 +17,9 @@ class Express {
 	constructor() {
 		this.express = express();
 
-		this.mountDotEnv();
 		this.mountMiddlewares();
 		this.mountRoutes();
 		this.mountErrorHandler();
-	}
-
-	private mountDotEnv(): void {
-		this.express = Env.init(this.express);
 	}
 
 	/**
@@ -54,7 +49,6 @@ class Express {
 	 */
 	public init(): any {
 		const port: number = Env.config().port;
-
 		const startServer = async() => {
 			this.express.listen(port, () => {
 				return console.log('\x1b[33m%s\x1b[0m', `Server :: Running @ 'http://localhost:${port}'`);

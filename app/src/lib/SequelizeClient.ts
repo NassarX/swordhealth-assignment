@@ -1,5 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import { DatabaseConfig } from '../config/db.config';
+import fs from "fs";
+import path from "path";
 
 class SequelizeClient {
 	private readonly sequelize: Sequelize;
@@ -11,9 +13,9 @@ class SequelizeClient {
 				host: config.host,
 				port: config.port,
 				dialectOptions: config.dialectOptions,
-				logging: false,
-				models: [config.modelsPath]
+				logging: false
 			});
+    this.importModels(config.modelsDir);
 	}
 
 	public async connect(): Promise<void> {
@@ -25,17 +27,24 @@ class SequelizeClient {
 		}
 	}
 
-  public async syncModels(): Promise<void> {
-    try {
-      await this.sequelize.sync({ force: false });
-    } catch (error) {
-      console.error('Unable to sync models:', error);
-    }
-  }
+	public async syncModels(): Promise<void> {
+		try {
+			await this.sequelize.sync({ force: false });
+		} catch (error) {
+			console.error('Unable to sync models:', error);
+		}
+	}
 
 	public getSequelize(): Sequelize {
 		return this.sequelize;
 	}
+
+  private importModels(modelsDir: string) {
+    const models = fs.readdirSync(modelsDir)
+      .filter((file) => /\.js$/.test(file))
+      .map(file => require(path.join(modelsDir, file)).default);
+    this.sequelize.addModels(models);
+  }
 }
 
 export default SequelizeClient;

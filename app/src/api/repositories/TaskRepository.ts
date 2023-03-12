@@ -11,7 +11,7 @@ export class TaskRepository {
   };
 
   update = async (id: number, payload: UpdateTaskDto): Promise<Task> => {
-    const task = await Task.findByPk(id);
+    const task = await Task.findByPk(id, { include: [User] });
     if (!task) {
         throw new NotFoundError(`Task with id ${id}`);
     }

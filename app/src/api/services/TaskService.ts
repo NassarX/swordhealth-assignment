@@ -3,20 +3,24 @@ import {TaskRepository} from "../repositories/TaskRepository";
 import {CreateTaskDto, TaskDto, TasksListDto, UpdateTaskDto} from "../types/task.dto";
 import {FilterQuery} from "../types/task.schema";
 import {MaintenanceTaskHydrator} from "../../utils/Helpers";
+import NotificationService from "./NotificationService";
 
 @Service()
 /**
  * Task Service
  */
 export default class TaskService {
-  taskRepository: TaskRepository;
-
-  taskHydrator: MaintenanceTaskHydrator
+  private taskRepository: TaskRepository;
+  private taskHydrator: MaintenanceTaskHydrator
+  private notificationService: NotificationService
 
   constructor(@Inject() taskRepository: TaskRepository,
-              @Inject() taskHydrator: MaintenanceTaskHydrator) {
+              @Inject() taskHydrator: MaintenanceTaskHydrator,
+              notificationService: NotificationService
+  ) {
     this.taskRepository = taskRepository;
     this.taskHydrator = taskHydrator;
+    this.notificationService = notificationService;
   }
 
   /**
@@ -25,9 +29,6 @@ export default class TaskService {
    * @param taskData
    */
   createTask = async (taskData: CreateTaskDto): Promise<TaskDto> => {
-    /**
-     * @TODO do the business logic related to tasks here.
-     */
     const createdTask = await this.taskRepository.create(taskData);
 
     return this.taskHydrator.hydrate(createdTask.get());
@@ -39,10 +40,12 @@ export default class TaskService {
    * @param taskData
    */
   updateTask = async (taskData: UpdateTaskDto): Promise<TaskDto> => {
-    /**
-     * @TODO do the business logic related to tasks here.
-     */
     const updatedTask = await this.taskRepository.update(taskData.id, taskData);
+    const hydratedTask = this.taskHydrator.hydrate(updatedTask.get());
+    if (hydratedTask.performedAt) {
+      const notification = this.taskHydrator.hydrateNotification(hydratedTask);
+      this.notificationService.send(notification);
+    }
     return this.taskHydrator.hydrate(updatedTask.get());
   }
 

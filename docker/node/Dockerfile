@@ -19,7 +19,7 @@ WORKDIR $APPLICATION_ROOT_DIR
 ENTRYPOINT ["docker-entrypoint"]
 
 # Set default command to start the server
-CMD ["node"]
+CMD ["yarn", "run", "dev"]
 
 
 

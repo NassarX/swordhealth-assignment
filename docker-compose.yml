@@ -33,7 +33,7 @@ services:
     volumes:
       - ${APPLICATION_RABBITMQ_DATA}:/var/lib/rabbitmq
     env_file:
-      - env/node.env
+      - env/rabbitmq.env
     ports:
       - ${APPLICATION_RABBITMQ_PORT_1}:${APPLICATION_RABBITMQ_PORT_1}
       - ${APPLICATION_RABBITMQ_PORT_2}:${APPLICATION_RABBITMQ_PORT_2}

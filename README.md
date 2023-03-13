@@ -141,18 +141,23 @@ or again you save time and stop container and remove the images by running `make
 
 ## Usage
 
+
+### Notes About API End Points
 The API provides endpoints for managing tasks and users. You'll need to register as a manager | technion and log in to access the protected endpoints.
 
-You can use a tool like Postman to test the API endpoints. Here's an overview of the available endpoints:
+You can use a tool like Postman to test the API endpoints. 
+#### Postman Collection: `/addons/postman`
 
-**`/api/v1/auth/register`** Register a new user.  
-**`/api/auth/login`** Log in and get a JWT token.   
-**`/api/tasks`** Get all tasks (managers only) or create a new task (technicians only).   
-**`/api/tasks/{:taskId}`** Get, update task (technicians only) or delete a task (managers only).
-**`/api/users/{:userId}/tasks/`**: Get all user tasks (managers only).  
+Here's an overview of the available endpoints:
+
+- **POST `/api/v1/auth/register`** Register a new user.  
+- **POST `/apiv1//auth/login`** Log in and get a JWT token.   
+- **[GET, POST]`/api/v1/tasks`** Get all tasks (managers only) or create a new task (technicians only).   
+- **[PUT, DELETE]`/api/v1/tasks/{:taskId}`** Get, update task (technicians only) or delete a task (managers only).
+- **[GET]`/api/v1/users/{:userId}/tasks/`**: Get all user tasks (managers only).  
 
 In addition, the notification service sends messages to a manager queue each time a technician performs a task.
-Managers subscribe to the queue using the queue name managerQueue to receive these messages.
+you can watch published and consumed messages through terminal.
 
 ## Unit tests
 

@@ -1,5 +1,6 @@
 import SequelizeClient from '../lib/SequelizeClient';
 import { getDatabases, DatabaseConfig } from '../config/db.config';
+import seedDatabase from '../database/seeders/index';
 
 class Database {
 
@@ -19,6 +20,9 @@ class Database {
 					console.log('All database connections established successfully.');
 					return Promise.all(connections.map(connection => connection.syncModels()));
 				}).then(() => {
+          seedDatabase().then(() => {
+          console.log('Database seeded successfully.');
+        });
 					console.log('All models were synchronized successfully.');
 				});
 		} catch (error) {

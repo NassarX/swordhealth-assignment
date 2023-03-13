@@ -14,6 +14,7 @@ class Permission extends Model<Permission> {
   @Column({
     type: DataType.STRING(100),
     allowNull: false,
+    unique: true,
   })
   name!: string;
 

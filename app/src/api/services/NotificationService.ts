@@ -1,8 +1,8 @@
-import {Service} from 'typedi';
+import { Service } from 'typedi';
 import { EmailManager } from "./messaging/EmailManager";
 import Logger from "../../lib/Logger";
 import appConfig from "../../config/app.config";
-import {NotificationServiceInterface} from "../types/interfaces/notification.service.interface";
+import { NotificationServiceInterface } from "../types/interfaces/notification.service.interface";
 
 export interface Notification {
   content: string,

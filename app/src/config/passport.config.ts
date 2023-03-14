@@ -2,8 +2,8 @@ import passportJwt from 'passport-jwt';
 import Env from "../config/app.config";
 import { Container } from "typedi";
 import UserService from "../api/services/UserService";
-import {UserRepository} from "../api/repositories/UserRepository";
-import {UserHydrator} from "../api/utils/Helpers";
+import { UserRepository } from "../api/repositories/UserRepository";
+import { UserHydrator } from "../api/utils/Helpers";
 
 const JwtStrategy = passportJwt.Strategy;
 const ExtractJwt = passportJwt.ExtractJwt;
@@ -15,7 +15,7 @@ const jwtOptions = {
 };
 
 const jwtStrategy = new JwtStrategy(jwtOptions, async(jwt_payload: any, done) => {
-  await userService.getUserByUserName(jwt_payload.sub.toLowerCase())
+	await userService.getUserByUserName(jwt_payload.sub.toLowerCase())
 		.then(user => { return done(null, user); })
 		.catch(error => { return done(error, false); });
 });

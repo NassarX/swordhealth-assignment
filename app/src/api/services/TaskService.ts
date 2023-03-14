@@ -1,12 +1,10 @@
 import {Container, Inject, Service} from 'typedi';
 import { CreateTaskDto, TaskDto, TasksListDto, UpdateTaskDto } from "../types/dtos/task.dto";
 import { FilterQuery } from "../types/schemas/task.schema";
-import {HydratorInterface, MaintenanceTaskHydrator, UserHydrator} from "../utils/Helpers";
+import { HydratorInterface } from "../utils/Helpers";
 import NotificationService from "./NotificationService";
 import { TaskRepositoryInterface } from "../types/interfaces/task.repository.interface";
-import {TaskServiceInterface} from "../types/interfaces/task.service.interface";
-import UserService from "./UserService";
-import {UserRepository} from "../repositories/UserRepository";
+import { TaskServiceInterface } from "../types/interfaces/task.service.interface";
 
 @Service()
 /**

@@ -1,19 +1,20 @@
 import {Inject, Service} from 'typedi';
-import {UserRepository} from "../repositories/UserRepository";
-import {CreateUserDto, UpdateUserDto, UserDto, UsersListDto} from "../types/user.dto";
-import {FilterQuery} from "../types/user.schema";
-import {UserHydrator} from "../utils/Helpers";
+import {CreateUserDto, UpdateUserDto, UserDto, UsersListDto} from "../types/dtos/user.dto";
+import {FilterQuery} from "../types/schemas/user.schema";
+import {HydratorInterface, UserHydrator} from "../utils/Helpers";
+import {UserServiceInterface} from "../types/interfaces/user.service.interface";
+import {UserRepositoryInterface} from "../types/interfaces/user.repository.interface";
 
 @Service()
 /**
  * User Service
  */
-export default class UserService {
-  userRepository: UserRepository;
+export default class UserService implements UserServiceInterface {
+  userRepository: UserRepositoryInterface;
 
-  userHydrator: UserHydrator
+  userHydrator: HydratorInterface
 
-  constructor(@Inject() userRepository: UserRepository, @Inject() userHydrator: UserHydrator) {
+  constructor(userRepository: UserRepositoryInterface, userHydrator: HydratorInterface) {
     this.userRepository = userRepository;
     this.userHydrator = userHydrator;
   }
@@ -24,10 +25,6 @@ export default class UserService {
    * @param userData
    */
   createUser = async (userData: CreateUserDto): Promise<UserDto> => {
-    /**
-     * @TODO do the business logic related to users here.
-     */
-
     // Validate if email | username exists
     await this.userRepository.isEmailTaken(userData.email);
     await this.userRepository.isUserNameTaken(userData.username);

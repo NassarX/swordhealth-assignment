@@ -1,21 +1,23 @@
-import {Inject, Service} from 'typedi';
-import {TaskRepository} from "../repositories/TaskRepository";
-import {CreateTaskDto, TaskDto, TasksListDto, UpdateTaskDto} from "../types/task.dto";
-import {FilterQuery} from "../types/task.schema";
-import {MaintenanceTaskHydrator} from "../utils/Helpers";
+import {Container, Inject, Service} from 'typedi';
+import { CreateTaskDto, TaskDto, TasksListDto, UpdateTaskDto } from "../types/dtos/task.dto";
+import { FilterQuery } from "../types/schemas/task.schema";
+import {HydratorInterface, MaintenanceTaskHydrator, UserHydrator} from "../utils/Helpers";
 import NotificationService from "./NotificationService";
+import { TaskRepositoryInterface } from "../types/interfaces/task.repository.interface";
+import {TaskServiceInterface} from "../types/interfaces/task.service.interface";
+import UserService from "./UserService";
+import {UserRepository} from "../repositories/UserRepository";
 
 @Service()
 /**
  * Task Service
  */
-export default class TaskService {
-  private taskRepository: TaskRepository;
-  private taskHydrator: MaintenanceTaskHydrator
+export default class TaskService implements TaskServiceInterface {
+  private taskRepository: TaskRepositoryInterface;
+  private taskHydrator: HydratorInterface
   private notificationService: NotificationService
 
-  constructor(@Inject() taskRepository: TaskRepository,
-              @Inject() taskHydrator: MaintenanceTaskHydrator,
+  constructor(taskRepository: TaskRepositoryInterface, taskHydrator: HydratorInterface,
               notificationService: NotificationService
   ) {
     this.taskRepository = taskRepository;
@@ -43,7 +45,7 @@ export default class TaskService {
     const updatedTask = await this.taskRepository.update(taskData.id, taskData);
     const hydratedTask = this.taskHydrator.hydrate(updatedTask.get());
     if (hydratedTask.performedAt) {
-      const notification = this.taskHydrator.hydrateNotification(hydratedTask);
+      const notification = this.taskHydrator.hydrateMessage(hydratedTask);
       this.notificationService.send(notification);
     }
     return this.taskHydrator.hydrate(updatedTask.get());

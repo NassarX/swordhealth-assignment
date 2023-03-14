@@ -7,11 +7,11 @@ import {
   getTaskQuerySchema,
   getTasksQuerySchema, getUserTasksQuerySchema,
   updateTaskSchema
-} from "../types/task.schema";
+} from "../types/schemas/task.schema";
 import {
   registerSchema,
   loginSchema
-} from "../types/user.schema";
+} from "../types/schemas/user.schema";
 
 import TaskController from "../controller/TaskController"
 import AuthController from "../controller/AuthController"

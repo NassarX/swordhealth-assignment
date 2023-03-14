@@ -1,19 +1,20 @@
 import { Inject, Service } from 'typedi';
 import TokenService from "./TokenService";
-import {LoginUserDto} from "../../types/user.dto";
+import {LoginUserDto} from "../../types/dtos/user.dto";
 import {UserRepository} from "../../repositories/UserRepository";
-import {UserHydrator} from "../../utils/Helpers";
+import {HydratorInterface, UserHydrator} from "../../utils/Helpers";
+import {UserRepositoryInterface} from "../../types/interfaces/user.repository.interface";
 
 @Service()
 /**
  * User Service
  */
 export default class AuthService {
-  userRepository: UserRepository;
+  userRepository: UserRepositoryInterface;
   tokenService: TokenService;
-  userHydrator: UserHydrator
+  userHydrator: HydratorInterface
 
-  constructor(@Inject() userRepository: UserRepository, @Inject() tokenService: TokenService, @Inject() userHydrator: UserHydrator) {
+  constructor(userRepository: UserRepositoryInterface, tokenService: TokenService, userHydrator: HydratorInterface) {
     this.userRepository  = userRepository;
     this.tokenService = tokenService;
     this.userHydrator = userHydrator;
@@ -27,7 +28,6 @@ export default class AuthService {
 
     // generate auth tokens
     const tokens = await this.tokenService.generateAuthTokens(user.username);
-
     return {
       user: await this.userHydrator.hydrate(user),
       tokens: tokens

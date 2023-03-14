@@ -1,11 +1,12 @@
 import Task from '../models/Task';
-import { CreateTaskDto, UpdateTaskDto } from "../types/task.dto";
+import { CreateTaskDto, UpdateTaskDto } from "../types/dtos/task.dto";
 import { Service } from "typedi";
 import { NotFoundError } from "../../lib/ApiError";
 import User from "../models/User";
+import { TaskRepositoryInterface } from "../types/interfaces/task.repository.interface";
 
 @Service()
-export class TaskRepository {
+export class TaskRepository implements TaskRepositoryInterface {
   create = async (payload: CreateTaskDto): Promise<Task> => {
     return await Task.create(payload);
   };

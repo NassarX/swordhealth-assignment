@@ -1,16 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from 'http-status-codes';
 import UserService from '../services/UserService';
-import { Service, Inject } from "typedi";
-import { CreateUserDto, UpdateUserDto } from "../types/user.dto";
-import {FilterQuery} from "../types/user.schema";
+import {Service, Container} from "typedi";
+import { CreateUserDto, UpdateUserDto } from "../types/dtos/user.dto";
+import {FilterQuery} from "../types/schemas/user.schema";
+import {UserServiceInterface} from "../types/interfaces/user.service.interface";
+import {UserRepository} from "../repositories/UserRepository";
+import {UserHydrator} from "../utils/Helpers";
 
 @Service()
 export default class UserController {
-  userService: UserService;
+  userService: UserServiceInterface;
 
-  constructor(@Inject() userService: UserService) {
-    this.userService = userService;
+  constructor() {
+    this.userService = new UserService(Container.get(UserRepository), Container.get(UserHydrator));
   }
 
   //@manager
@@ -30,7 +33,6 @@ export default class UserController {
     }
   }
 
-  //@manager || tech
   createUser = async (req: Request, res: Response, next: NextFunction) => {
     const userId = 1; // from auth service we get current auth user id
     const createUserDto: CreateUserDto = { ...req.body, userId: userId }

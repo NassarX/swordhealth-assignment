@@ -1,18 +1,25 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from 'http-status-codes';
 import TaskService from '../services/TaskService';
-import { Service, Inject } from "typedi";
-import { CreateTaskDto, UpdateTaskDto } from "../types/task.dto";
-import { FilterQuery } from "../types/task.schema";
+import {Service, Inject, Container} from "typedi";
+import { CreateTaskDto, UpdateTaskDto } from "../types/dtos/task.dto";
+import { FilterQuery } from "../types/schemas/task.schema";
 import { ApiError } from "../../lib/ApiError";
-import { UserDto } from "../types/user.dto";
+import { UserDto } from "../types/dtos/user.dto";
+import {MaintenanceTaskHydrator, UserHydrator} from "../utils/Helpers";
+import {TaskRepository} from "../repositories/TaskRepository";
+import {TaskServiceInterface} from "../types/interfaces/task.service.interface";
+import NotificationService from "../services/NotificationService";
+import {NotificationServiceInterface} from "../types/interfaces/notification.service.interface";
 
 @Service()
 export default class TaskController {
-  taskService: TaskService;
+  taskService: TaskServiceInterface;
 
-  constructor(@Inject() taskService: TaskService) {
-    this.taskService = taskService;
+  constructor() {
+    this.taskService =
+      new TaskService(Container.get(TaskRepository),
+        Container.get(MaintenanceTaskHydrator), Container.get(NotificationService))
   }
 
   getTasks = (async (req: Request, res: Response, next: NextFunction): Promise<void> => {

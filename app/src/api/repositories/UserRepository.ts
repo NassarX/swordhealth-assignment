@@ -1,14 +1,15 @@
 import User from '../models/User';
-import { CreateUserDto, UpdateUserDto } from "../types/user.dto";
+import { CreateUserDto, UpdateUserDto } from "../types/dtos/user.dto";
 import { Service } from "typedi";
 import { ApiError, NotFoundError } from "../../lib/ApiError";
 import { StatusCodes } from "http-status-codes";
-import {Op} from "sequelize";
+import { Op } from "sequelize";
 import Role from "../models/Role";
 import Permission from "../models/Permission";
+import { UserRepositoryInterface } from "../types/interfaces/user.repository.interface";
 
 @Service()
-export class UserRepository {
+export class UserRepository implements UserRepositoryInterface {
   create = async (payload: CreateUserDto): Promise<User> => {
     return await User.create(payload);
   };

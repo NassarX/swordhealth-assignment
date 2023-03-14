@@ -1,4 +1,4 @@
-import {Notification} from "../services/NotificationService";
+import {Notification} from "../../services/NotificationService";
 
 type BaseTaskDto = {
   title: string;

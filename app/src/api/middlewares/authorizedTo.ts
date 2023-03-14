@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { ApiError } from '../../lib/ApiError';
-import { UserDto } from "../types/user.dto";
+import { UserDto } from "../types/dtos/user.dto";
 import TaskService from "../services/TaskService";
 import {Container} from "typedi";
 

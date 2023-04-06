@@ -1,4 +1,4 @@
-import {Notification} from "../../services/NotificationService";
+import {NotificationDTo} from "./notification.dto";
 
 type BaseTaskDto = {
   title: string;
@@ -22,7 +22,7 @@ type TaskDto = BaseTaskDto & {
   updatedAt?: Date | null | string;
 };
 
-type TaskNotificationDto = Notification & {};
+type TaskNotificationDto = NotificationDTo & {};
 
 type TasksListDto = {
   userId?: number,

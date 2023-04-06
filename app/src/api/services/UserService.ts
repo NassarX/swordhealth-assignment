@@ -1,20 +1,20 @@
-import { Service } from 'typedi';
+import {Inject, Service} from 'typedi';
 import { CreateUserDto, UpdateUserDto, UserDto, UsersListDto } from "../types/dtos/user.dto";
 import { FilterQuery } from "../types/schemas/user.schema";
 import { HydratorInterface } from "../utils/Helpers";
-import { UserServiceInterface } from "../types/interfaces/user.service.interface";
 import { UserRepositoryInterface } from "../types/interfaces/user.repository.interface";
+import {UserRepository} from "../repositories/UserRepository";
 
 @Service()
 /**
  * User Service
  */
-export default class UserService implements UserServiceInterface {
+export default class UserService {
   userRepository: UserRepositoryInterface;
 
   userHydrator: HydratorInterface
 
-  constructor(userRepository: UserRepositoryInterface, userHydrator: HydratorInterface) {
+  constructor(userRepository: UserRepository, userHydrator: HydratorInterface) {
     this.userRepository = userRepository;
     this.userHydrator = userHydrator;
   }

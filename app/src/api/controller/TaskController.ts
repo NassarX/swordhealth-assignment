@@ -8,12 +8,11 @@ import { ApiError } from "../../lib/ApiError";
 import { UserDto } from "../types/dtos/user.dto";
 import { MaintenanceTaskHydrator } from "../utils/Helpers";
 import { TaskRepository } from "../repositories/TaskRepository";
-import { TaskServiceInterface } from "../types/interfaces/task.service.interface";
 import NotificationService from "../services/NotificationService";
 
 @Service()
 export default class TaskController {
-  taskService: TaskServiceInterface;
+  taskService: TaskService;
 
   constructor() {
     this.taskService =

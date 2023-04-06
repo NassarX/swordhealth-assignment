@@ -27,8 +27,6 @@ export abstract class MessagePublisher {
     }
   }
 
-  public abstract handleMessage(message: any): Promise<any>;
-
   public abstract validateExchangeConfig(exchange: string): string;
 
   public abstract validateQueueConfig(exchange: string): string;

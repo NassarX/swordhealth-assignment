@@ -4,14 +4,13 @@ import UserService from '../services/UserService';
 import AuthService from '../services/auth/AuthService';
 import { Service, Container } from "typedi";
 import { CreateUserDto, LoginUserDto } from "../types/dtos/user.dto";
-import { UserServiceInterface } from "../types/interfaces/user.service.interface";
 import { UserRepository } from "../repositories/UserRepository";
 import { UserHydrator } from "../utils/Helpers";
 import TokenService from "../services/auth/TokenService";
 
 @Service()
 export default class AuthController {
-  userService: UserServiceInterface;
+  userService: UserService;
   authService: AuthService;
 
   constructor() {

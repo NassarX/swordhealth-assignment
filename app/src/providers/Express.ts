@@ -71,22 +71,24 @@ class Express {
   /**
    * Starts the express server
    */
-  public init(): any {
+  public async init(): Promise<any> {
     const port: number = Env.config().port;
     const startServer = async () => {
       const server = this.express.listen(port, () => {
         console.log('\x1b[33m%s\x1b[0m', `Server :: Running @ 'http://localhost:${port}'`);
       }).on('error', _error => {
-        console.log('Error occurred: ', _error.message);
+        console.log('Error occurred on running Server: ', _error.message);
         process.exit(1);
       });
+
       // Handle server shutdown gracefully
       this.shutdownServer(server);
-
-      await startServer();
     }
+
+    await startServer();
   }
+
 }
 
-  /** Export the express module */
-  export default new Express();
+/** Export the express module */
+export default new Express();

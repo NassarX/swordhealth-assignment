@@ -30,9 +30,3 @@ dist
 
 # Optional eslint cache
 .eslintcache
-
-# Mysql DB Schemas
-db/data
-
-# Rabbitmq data
-rabbitmq

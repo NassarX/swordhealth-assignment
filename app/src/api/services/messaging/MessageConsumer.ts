@@ -27,7 +27,6 @@ export class MessageConsumer {
        // consumer queue messages
       await channel.consume(tasksQueue.name, async (messageData) => {
 
-
         if (messageData === null) {
           return;
         }
@@ -49,7 +48,7 @@ export class MessageConsumer {
   }
 
   public handleMessage(message: any): Promise<any> {
-    console.log(message);
+    console.log("Message received from Queue: ", message);
     return Promise.resolve()
   }
 }

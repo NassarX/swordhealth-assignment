@@ -1,21 +1,22 @@
 import {Container, Inject, Service} from 'typedi';
 import { CreateTaskDto, TaskDto, TasksListDto, UpdateTaskDto } from "../types/dtos/task.dto";
 import { FilterQuery } from "../types/schemas/task.schema";
-import { HydratorInterface } from "../utils/Helpers";
+import {HydratorInterface, MaintenanceTaskHydrator} from "../utils/Helpers";
 import NotificationService from "./NotificationService";
 import { TaskRepositoryInterface } from "../types/interfaces/task.repository.interface";
-import { TaskServiceInterface } from "../types/interfaces/task.service.interface";
+import {TaskRepository} from "../repositories/TaskRepository";
 
 @Service()
 /**
  * Task Service
  */
-export default class TaskService implements TaskServiceInterface {
+export default class TaskService {
   private taskRepository: TaskRepositoryInterface;
   private taskHydrator: HydratorInterface
   private notificationService: NotificationService
 
-  constructor(taskRepository: TaskRepositoryInterface, taskHydrator: HydratorInterface,
+  //@TODO to inject TaskRepositoryInterface with its concert classes in container
+  constructor(taskRepository: TaskRepository, taskHydrator: MaintenanceTaskHydrator,
               notificationService: NotificationService
   ) {
     this.taskRepository = taskRepository;
@@ -41,10 +42,11 @@ export default class TaskService implements TaskServiceInterface {
    */
   updateTask = async (taskData: UpdateTaskDto): Promise<TaskDto> => {
     const updatedTask = await this.taskRepository.update(taskData.id, taskData);
+    const user = updatedTask.user.get();
     const hydratedTask = this.taskHydrator.hydrate(updatedTask.get());
     if (hydratedTask.performedAt) {
       const notification = this.taskHydrator.hydrateMessage(hydratedTask);
-      this.notificationService.send(notification);
+      this.notificationService.send(user, notification);
     }
     return this.taskHydrator.hydrate(updatedTask.get());
   }

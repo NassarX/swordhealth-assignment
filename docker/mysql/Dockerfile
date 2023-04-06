@@ -1,6 +1,6 @@
 ARG MYSQL_VERSION=8.0
 
-FROM mysql:${MYSQL_VERSION} AS assignment_mysql
+FROM mysql:${MYSQL_VERSION} AS mysql
 MAINTAINER Mahmoud Nassar <mahmoud@nassarx.com>
 
 #ADD my.cnf /etc/mysql/conf.d/my.cnf

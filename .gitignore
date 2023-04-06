@@ -11,3 +11,6 @@ logs
 .env.test
 /.env
 /env/*.env
+
+# Mysql DB Schemas
+mysql

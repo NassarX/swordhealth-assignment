@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, Application } from 'express';
 import { ApiError } from '../lib/ApiError';
 import Logger from '../lib/Logger';
+import Env from "../config/app.config";
 
 class ErrorHandler {
 	static handle = (_express: Application): Application => {
@@ -11,7 +12,7 @@ class ErrorHandler {
 				success: false,
 				message: err.message,
 				rawErrors: err.rawErrors?.length ? err.rawErrors : undefined,
-				stack: err.stack
+				stack: Env.config().appEnv === "development"?  err.stack : []
 			});
 		};
 

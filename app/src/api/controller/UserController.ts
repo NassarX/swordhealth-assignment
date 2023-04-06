@@ -4,13 +4,12 @@ import UserService from '../services/UserService';
 import { Service, Container } from "typedi";
 import { CreateUserDto, UpdateUserDto } from "../types/dtos/user.dto";
 import { FilterQuery } from "../types/schemas/user.schema";
-import { UserServiceInterface } from "../types/interfaces/user.service.interface";
 import { UserRepository } from "../repositories/UserRepository";
 import { UserHydrator } from "../utils/Helpers";
 
 @Service()
 export default class UserController {
-  userService: UserServiceInterface;
+  userService: UserService;
 
   constructor() {
     this.userService = new UserService(Container.get(UserRepository), Container.get(UserHydrator));

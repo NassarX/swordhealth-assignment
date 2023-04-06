@@ -11,7 +11,7 @@ class ErrorHandler {
 				success: false,
 				message: err.message,
 				rawErrors: err.rawErrors?.length ? err.rawErrors : undefined,
-				stack: err.stack
+				//stack: err.stack
 			});
 		};
 

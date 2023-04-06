@@ -5,7 +5,7 @@ services:
     build:
       context: ./docker/node
       args:
-        APP_ROOT_DIR: '/usr/src/${APP_DIR}'
+        APP_ROOT_DIR: /usr/src/${APP_DIR}
         APP_ENV: ${APP_ENV}
       target: 'node'
     image: 'docker.io/swordhealth/node:latest'

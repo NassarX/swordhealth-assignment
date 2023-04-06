@@ -1,6 +1,6 @@
 ARG RABBITMQ_VERSION=3.11
 
-FROM rabbitmq:${RABBITMQ_VERSION}-management AS assignment_rabbitmq
+FROM rabbitmq:${RABBITMQ_VERSION}-management AS rabbitmq
 MAINTAINER Mahmoud Nassar <mahmoud@nassarx.com>
 
 # Enable RabbitMQ plugins

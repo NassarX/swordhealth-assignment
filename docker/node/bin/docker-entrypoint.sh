@@ -11,7 +11,7 @@ yarn build
 cp -r public dist/public
 
 # Run yarn on development | production mode
-if [ "$APPLICATION_API_SERVER_ENV" = "production" ]; then
+if [ "$APP_ENV" = "production" ]; then
   echo "Running in production mode"
 else
   echo "Running in development mode"

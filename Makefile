@@ -21,7 +21,6 @@ endef
 up: build ## Copy .env.dist file, Starts and Runs the containers
 	@$(call copy_envs)
 	docker-compose up
-	docker exec -it assignment_node /bin/sh -c "yarn start"
 
 build: ## Copy .env.dist file, build containers from custom file
 	@$(call copy_envs)
